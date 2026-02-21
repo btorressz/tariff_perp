@@ -48,4 +48,60 @@ index_bps = baseline_bps + Σ (weight_bps * addon_bps / 10_000)
 
 - clamps to [0, 50,000] bps (0% to 500%)
 
+## ### ***📈 Perp Mark Price (Q64.64)***
+
+Market uses **Q64.64 fixed-point** for prices (`i128`) and a **constant-product vAMM**:
+
+- `mark_price = quote_reserve / base_reserve` (**Q64.64**)
+- reserves update while maintaining:  
+  `k = base_reserve * quote_reserve` *(integer rounding applies)*
+
+---
+
+## ### ***💵 Collateral + Positions***
+
+- collateral tracked as `u64` **micro-USDC** *(6 decimals)*
+- positions tracked as `i128` **micro-base** using:  
+  `BASE_Q = 1_000_000` *(1e6)*
+- entry & execution prices stored in **Q64.64** (`i128`)
+
+---
+
+## ### ***⏱️ Funding (period-based)***
+
+Funding updates in **discrete periods** *(default hourly; configurable)*:
+
+- compare **mark** vs **index**
+- compute funding rate *(capped per period: **±50 bps / period**)*
+- update `funding_index`
+- users settle funding into collateral on interaction:
+  - trade / withdraw / liquidate / close
+
+---
+
+## ### ***🧯 Liquidation (partial)***
+
+Liquidation closes only a fraction per call:
+
+- `LIQUIDATION_FRACTION_BPS = 2_000` → **20%**
+- liquidation fee charged only on **closed notional**
+- if still under maintenance after partial close → account remains **liquidatable** (repeat calls)
+
+---
+
+## ### ***🛰️ Pyth SOL/USD sanity guard***
+
+Pyth is used as a **risk/sanity gate**, **not** as the tariff index.
+
+Blocks risk operations if:
+
+- feed is stale (`get_price_no_older_than`)
+- price is non-positive
+- relative confidence too wide:
+
+  `conf_ratio_bps = conf * 10_000 / abs(price)`
+
+  require `conf_ratio_bps <= 100` (**1%**)
+
+- `publish_time` goes backwards *(monotonic guard stored in market)*
 
