@@ -261,6 +261,17 @@ Blocks risk operations if:
 
 A **clean, research-grade demo** showing how you can combine a **policy-driven index** (tariff regime data) with a **perpetual futures market** on Solana using Anchor — all in a way that’s testable, deterministic, and easy to extend.
 
+### ✅ Specifically, it demonstrates:
+
+- **🧾 Oracle-driven “policy index”**
+  - An admin-updated TariffOracle with:
+    - baseline tariff (bps)
+    - per-country add-ons (signed bps, can be negative)
+    - basket weights (trade-weight style weighting)
+    - validity windows (staleness protection)
+    - update guardrails (anti-spam + anti-jump)
+  - A deterministic on-chain formula that produces a single **Tariff Index** number you can reference in markets.
+
 
 
 
