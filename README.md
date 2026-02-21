@@ -36,6 +36,8 @@ This project is a **Tariff Index Oracle + Perpetual Futures market** implemented
 ## ### ***🧾 Tariff Index (BPS)***
 
 The oracle computes a tariff index in basis points:
+index_bps = baseline_bps + Σ (weight_bps * addon_bps / 10_000)
+
 - baseline_bps = global baseline tariff
 
 - addon_bps = per-country adjustment (signed i16, can be negative)
@@ -46,5 +48,4 @@ The oracle computes a tariff index in basis points:
 
 - clamps to [0, 50,000] bps (0% to 500%)
 
-```text
-index_bps = baseline_bps + Σ (weight_bps * addon_bps / 10_000)
+
