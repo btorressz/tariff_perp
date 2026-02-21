@@ -200,7 +200,6 @@ Blocks risk operations if:
 - `last_funding_index: i128`
 - `realized_pnl_usdc: i64`
 
-  ---
 
 - `publish_time` goes backwards *(monotonic guard stored in market)*
 
