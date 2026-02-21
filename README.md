@@ -199,7 +199,20 @@ Blocks risk operations if:
 - `entry_price_q64: i128`
 - `last_funding_index: i128`
 - `realized_pnl_usdc: i64`
-
-
 - `publish_time` goes backwards *(monotonic guard stored in market)*
+
+
+  ---
+
+  ## ### ***🧰 Instruction Set***
+
+## ### ***🧾 Oracle instructions***
+- `initialize_oracle(baseline_bps, confidence_bps, valid_secs)`
+- `oracle_set_guardrails(min_update_interval_secs, max_jump_bps_per_update)`
+- `oracle_set_baseline(new_baseline_bps, valid_secs)`
+- `oracle_upsert_country_addon(country_code, addon_bps, enabled)`
+- `oracle_upsert_basket_weight(country_code, weight_bps, enabled)`
+
+---
+
 
