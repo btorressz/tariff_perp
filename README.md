@@ -296,7 +296,15 @@ A **clean, research-grade demo** showing how you can combine a **policy-driven i
   - Bad debt coverage attempts are capped per liquidation (circuit breaker).
   - Emits events for visibility (trade/funding/liquidation/bad-debt).
 
+- **🛰️ Pyth SOL/USD sanity gating**
+  - Uses Pyth as a safety gate to block risk-moving actions if price quality is bad:
+    - stale feed
+    - non-positive price
+    - confidence ratio too wide
+    - non-monotonic publish time
+  - Pyth is **not** the tariff index itself — it’s a guardrail.
 
+---
 
 
 
