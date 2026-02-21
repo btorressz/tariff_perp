@@ -2,7 +2,6 @@
 
 > ### ⚠️ Note
 > **This proof-of-concept was developed in _Solana Playground_ using _Anchor_.**  
-> A “copilot” assistant helped draft parts of this README, and I adapted/expanded it to match the final on-chain program behavior.
 
 ---
 
