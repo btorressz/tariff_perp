@@ -285,6 +285,17 @@ A **clean, research-grade demo** showing how you can combine a **policy-driven i
   - Funding accrues **periodically** (discrete cadence) to push mark toward index.
   - Funding settles into user collateral on interaction (trade / withdraw / close / liquidate).
   - Initial + maintenance margin checks enforce basic risk safety.
+     
+- **🧯 Partial liquidation behavior**
+  - Liquidations close a fraction per call (instead of nuking the whole position).
+  - Fees are charged on **closed notional**, not total notional.
+  - Repeat liquidations are possible if the account remains unhealthy.
+
+- **🛡️ Insurance-style backstop (capped)**
+  - Fee routing to an insurance vault.
+  - Bad debt coverage attempts are capped per liquidation (circuit breaker).
+  - Emits events for visibility (trade/funding/liquidation/bad-debt).
+
 
 
 
