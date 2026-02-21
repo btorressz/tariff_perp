@@ -271,6 +271,21 @@ A **clean, research-grade demo** showing how you can combine a **policy-driven i
     - validity windows (staleness protection)
     - update guardrails (anti-spam + anti-jump)
   - A deterministic on-chain formula that produces a single **Tariff Index** number you can reference in markets.
+ 
+    - **📈 vAMM-based perpetuals**
+  - A simple, transparent **constant-product virtual AMM** used to price and execute perps.
+  - Mark price derived from reserves and updated by trades.
+  - Price impact guardrails and spread controls to reduce obvious manipulation.
+
+- **💵 Real token collateral (USDC vault)**
+  - Users deposit real SPL token collateral (USDC-like mint) into a PDA-owned vault.
+  - Withdrawals are guarded by margin requirements (can’t withdraw if it would break safety).
+
+- **⏱️ Funding + margin mechanics**
+  - Funding accrues **periodically** (discrete cadence) to push mark toward index.
+  - Funding settles into user collateral on interaction (trade / withdraw / close / liquidate).
+  - Initial + maintenance margin checks enforce basic risk safety.
+
 
 
 
