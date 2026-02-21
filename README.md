@@ -215,4 +215,43 @@ Blocks risk operations if:
 
 ---
 
+## ### ***🛠️ Market/admin instructions***
+- `initialize_market(base_reserve, quote_reserve, margin/fee params, risk limits, pyth_sol_usd_feed)`
+- `set_reduce_only(reduce_only)`
+- `set_paused(paused)`
+- `set_market_config(max_insurance_payout_per_liq_usdc, fee_to_insurance_bps, funding_period_secs, min_trade_base, max_price_impact_bps, spread_bps)`
+
+---
+
+## ### ***💳 User instructions***
+- `initialize_margin()`
+- `deposit_usdc(amount)` ✅ allowed while paused
+- `withdraw_usdc(amount)` ❌ blocked while paused
+- `open_position(side, base_amount)` ❌ blocked while paused
+- `close_position()` ✅ allowed while paused / reduce-only
+- `apply_funding()` ❌ blocked while paused
+- `liquidate()` ❌ blocked while paused
+
+---
+
+## ### ***🧪 Events (for demos + debugging)***
+- `OracleUpdateEvent`
+- `DepositEvent`
+- `WithdrawEvent`
+- `TradeEvent`
+- `FundingAppliedEvent`
+- `LiquidationEvent`
+- `BadDebtEvent`
+
+---
+
+## ### ***🧮 Units & Math***
+- **Collateral:** micro-USDC (`u64`, 6 decimals)
+- **Position base:** micro-base (`i128`, `BASE_Q = 1e6`)
+- **Prices:** Q64.64 (`i128`)
+- **Tariffs:** BPS (`u16` / `i16`, 10,000 bps = 100%)
+- ✅ No floats, checked integer math everywhere
+
+  ---
+
 
