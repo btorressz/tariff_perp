@@ -306,6 +306,34 @@ A **clean, research-grade demo** showing how you can combine a **policy-driven i
 
 ---
 
+## ### ***❌ It *isn’t (yet)*** ❌
+
+A full production perpetual DEX. This POC intentionally avoids major components that production perps require.
+
+### ❌ Missing / simplified components:
+
+- **📚 No orderbook / CLOB**
+  - No on-chain matching engine.
+  - No maker/taker queue, no limit order depth, no cancel/replace logic.
+
+- **🔨 No auction-based liquidation engine**
+  - No liquidation auctions, no partial fill matching, no Dutch auction, no keeper competition mechanisms.
+  - Liquidation is direct and simplified.
+
+- **🧠 No multi-collateral cross-margin risk engine**
+  - No portfolio margin across multiple markets.
+  - No correlated risk offsets, no haircuts per asset class, no dynamic risk weights.
+
+- **🔗 No decentralized tariff publisher**
+  - The tariff oracle is admin-updated for POC speed and clarity.
+  - No multisig governance, threshold signatures, decentralized feeders, or on-chain verification of sources.
+
+- **🧾 No full exchange accounting stack**
+  - No fee tiers, rebates, referral accounting, or detailed trading ledger system.
+  - No insurance fund policies like ADL (auto-deleveraging) or socialized loss mechanisms beyond the simple cap.
+
+---
+
 
 
 
