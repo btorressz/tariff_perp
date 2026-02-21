@@ -103,5 +103,104 @@ Blocks risk operations if:
 
   require `conf_ratio_bps <= 100` (**1%**)
 
+  ---
+
+  ## ### ***🏗️ Architecture***
+
+## ### ***🧷 PDAs***
+
+| PDA | Seeds | Purpose |
+|---|---|---|
+| `TariffOracle` | `["oracle", admin]` | Admin-controlled tariff oracle |
+| `TariffPerpMarket` | `["market", oracle, usdc_mint]` | Market state + config |
+| `vault_authority` | `["vault_auth", market]` | SPL token authority for collateral vault |
+| `insurance_authority` | `["insurance", market]` | SPL token authority for insurance vault |
+| `MarginAccount` | `["margin", market, owner]` | User margin + position state |
+
+---
+
+## ### ***🏦 Token Accounts (ATAs)***
+
+### 💰 Vault USDC ATA *(owned by `vault_authority` PDA)*
+- Holds user deposits  
+- Used for withdrawals + liquidator payouts
+
+### 🛡️ Insurance USDC ATA *(owned by `insurance_authority` PDA)*
+- Receives fee routing  
+- Covers bad debt *(capped per liquidation)*
+
+---
+
+## ### ***🧱 Data Structures***
+
+## ### ***🧾 `TariffOracle`***
+
+**Fields**
+- `admin: Pubkey`
+- `baseline_tariff_bps: u16`
+- `confidence_bps: u16`
+- `valid_until_ts: i64`
+- `last_updated_ts: i64`
+
+**Guardrails**
+- `min_update_interval_secs: i64`
+- `max_jump_bps_per_update: u16`
+- `last_baseline_bps: u16`
+
+**Fixed arrays**
+- `country_addons: [CountryAddon; 16]` + `addon_len`
+- `basket_weights: [BasketWeight; 16]` + `weight_len`
+
+---
+
+## ### ***📊 `TariffPerpMarket`***
+
+**Core**
+- `admin, oracle, usdc_mint`
+- vault + insurance authority bumps
+- `vault_usdc, insurance_vault_usdc`
+- `pyth_sol_usd_feed, last_pyth_publish_time`
+
+**vAMM**
+- `base_reserve, quote_reserve, invariant_k`
+
+**Funding**
+- `funding_index, last_funding_ts, funding_period_secs`
+
+**Fees + margins**
+- `initial_margin_bps, maintenance_margin_bps`
+- `trade_fee_bps, liquidation_fee_bps`
+
+**Insurance**
+- `max_insurance_payout_per_liq_usdc`
+- `fee_to_insurance_bps`
+
+**vAMM guardrails**
+- `min_trade_base`
+- `max_price_impact_bps`
+- `spread_bps`
+
+**Switches**
+- `reduce_only, paused`
+
+**Market tracking**
+- `open_interest_base, net_position_base`
+
+**Risk limits**
+- `max_open_interest_base, max_skew_base`
+
+---
+
+## ### ***👤 `MarginAccount`***
+
+- `owner, market`
+- `collateral_usdc: u64`
+- `position_base: i128`
+- `entry_price_q64: i128`
+- `last_funding_index: i128`
+- `realized_pnl_usdc: i64`
+
+  ---
+
 - `publish_time` goes backwards *(monotonic guard stored in market)*
 
