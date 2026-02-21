@@ -1,46 +1,51 @@
-# tariff_perp
-# 🎯 Tariff Perpetual futures Program
+# 🌎📈 Tariff Perpetual Futures Program (Solana / Anchor)
 
-A sophisticated **Solana Anchor-based perpetual futures protocol** featuring dynamic tariff-based pricing, funding rates, liquidation mechanisms, and comprehensive risk management.
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Core Components](#core-components)
-- [Key Features](#key-features)
-- [Program Architecture](#program-architecture)
-- [Account Structures](#account-structures)
-- [Instructions](#instructions)
-- [Error Handling](#error-handling)
-- [Safety & Security](#safety--security)
-- [Getting Started](#getting-started)
-- [Constants & Configuration](#constants--configuration)
+> ### ⚠️ Note
+> **This proof-of-concept was developed in _Solana Playground_ using _Anchor_.**  
+> A “copilot” assistant helped draft parts of this README, and I adapted/expanded it to match the final on-chain program behavior.
 
 ---
 
-## 🌟 Overview
+## ### ***✨ Overview***
 
-The **Tariff Perpetual Futures** program is a decentralized protocol for trading perpetual futures contracts on Solana. It uses a virtual Automated Market Maker (vAMM) model combined with a novel **dynamic tariff oracle system** to determine index prices and funding rates.
+This project is a **Tariff Index Oracle + Perpetual Futures market** implemented as a single Solana program. It models a world where **tariff policy shocks** (baseline tariffs + country-specific add-ons) can be turned into a tradable on-chain index, and a perp market can offer **hedging** and **speculation** on “global tariff pressure.”
 
-### Key Highlights:
+### ✅ At a high level
 
-✨ **Dynamic Tariff Oracle** - Country-based addons and basket weights drive index pricing  
-🔐 **Collateralized Trading** - USDC-backed margin accounts with real-time monitoring  
-📊 **Virtual AMM** - Constant-product formula for position management  
-⚡ **Funding Rates** - Automatic funding settlements per configurable periods  
-🛡️ **Risk Management** - Position limits, liquidation mechanisms, bad debt insurance  
-💰 **Insurance Fund** - Fee routing and bad debt coverage system  
-🔍 **Pyth Oracle Integration** - SOL/USD price feed for sanity checks and monotonic updates
+- **🧾 TariffOracle (admin-updated)** stores:
+  - **baseline tariff** (bps)
+  - optional **country add-ons** (bps, signed — can be negative)
+  - optional **basket weights** (bps)
+  - **validity window** (staleness protection)
+  - **update guardrails** (anti-spam + anti-jump)
+
+- **🧠 TariffPerpMarket** references the oracle and runs a perp venue with:
+  - **💵 USDC collateral** deposited into a PDA-owned vault (SPL tokens)
+  - **📊 vAMM pricing** (constant product)
+  - **⏱️ funding** in discrete periods (keeps mark aligned with index)
+  - **🧯 partial liquidations** (unwinds risk gradually)
+  - **🛡️ insurance fund** (fee routing + bad-debt backstop with a cap)
+  - **🛰️ Pyth SOL/USD sanity guard** (blocks risky ops if feed is stale / low-quality)
+
+> ✅ **POC / research-grade demo**  
+> ❌ Not a production perp exchange (no orderbook, no advanced liquidation auctions, etc.)
 
 ---
 
-## 🏗️ Core Components
+## ### ***🧠 Key Concepts***
 
-### 1. **Tariff Oracle** 🎲
-Manages dynamic tariff-based index pricing:
-- **Baseline Tariff** - Base percentage rate (0-500%)
-- **Country Addons** - Signed basis point adjustments per country (up to 16)
-- **Basket Weights** - Weighted contributions from country baskets (up to 16)
-- **Staleness Tracking** - Time-locked validity windows with update cadences
+## ### ***🧾 Tariff Index (BPS)***
 
-**Tariff Index Calculation:**
+The oracle computes a tariff index in basis points:
+- baseline_bps = global baseline tariff
+
+- addon_bps = per-country adjustment (signed i16, can be negative)
+
+- weight_bps = basket weight (u16, typically totals 10,000 across enabled entries)
+
+- only counts entries where both addon + weight exist for same country and are enabled
+
+- clamps to [0, 50,000] bps (0% to 500%)
+
+```text
+index_bps = baseline_bps + Σ (weight_bps * addon_bps / 10_000)
