@@ -255,3 +255,12 @@ Blocks risk operations if:
   ---
 
 
+## ### ***✅ What this POC is (and isn’t)***
+
+## ### ***✅ It *is*** ✅
+
+A **clean, research-grade demo** showing how you can combine a **policy-driven index** (tariff regime data) with a **perpetual futures market** on Solana using Anchor — all in a way that’s testable, deterministic, and easy to extend.
+
+
+
+
