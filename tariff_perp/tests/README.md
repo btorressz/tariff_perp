@@ -83,3 +83,18 @@ If Pyth is stale/unavailable:
 Both outcomes are valid.
 
 ---
+
+## 🛰️ Why Some Tests Skip
+
+Solana Playground clusters often lack fresh Pyth updates.
+
+Since this program enforces:
+- Staleness bounds
+- Confidence checks
+- Price validity
+
+The test detects Pyth guard errors and skips risk tests instead of failing.
+
+---
+
+---
