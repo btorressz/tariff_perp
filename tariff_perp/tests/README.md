@@ -21,3 +21,25 @@ The test file verifies the full lifecycle of your protocol:
 - 📈 **Trading / Funding / Liquidation** — risk-moving logic (when Pyth is usable)
 
 ---
+
+## 🧩 Test Breakdown
+
+---
+
+### 1️⃣ 🔧 `before()` — Setup Phase
+
+This runs once before tests begin.
+
+**What it does:**
+
+- 💸 Transfers SOL from admin → `user` + `liquidator`
+  - (Avoids flaky `requestAirdrop`)
+- 🪙 Creates a fresh **6-decimal USDC mint**
+- 👛 Creates Associated Token Accounts (ATAs)
+- 🧾 Mints:
+  - ✅ 5000 USDC to user
+  - ✅ 1000 USDC to liquidator
+
+This guarantees a clean token environment each test run.
+
+---
