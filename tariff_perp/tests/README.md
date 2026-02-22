@@ -42,4 +42,17 @@ This runs once before tests begin.
 
 This guarantees a clean token environment each test run.
 
+### 2️⃣ 🏛️ Initialize Oracle (Idempotent)
+
+Derives the Oracle PDA:
+
+["oracle", admin]
+
+
+#### 🛑 Important Fix
+If the oracle already exists (from a previous Playground run), the test **does not reinitialize it**.
+
+This prevents the classic error: custom program error: 0x0
+
+
 ---
