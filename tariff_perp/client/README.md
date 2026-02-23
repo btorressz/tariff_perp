@@ -56,3 +56,72 @@ Idempotent — safe to re-run.
 The market references:
 
 🛰️ **Devnet SOL/USD Pyth feed** : J83w4HKfqxwcq3BEMMkPFSppX3gqekLyLJBexebFVkix
+
+
+---
+
+### 5️⃣ Initialize Margin Account
+- Derives user margin PDA.
+- Creates it if missing.
+
+Each user gets a separate on-chain margin account.
+
+---
+
+### 6️⃣ Deposit USDC
+- Deposits 1000 USDC into the market vault.
+- Collateral now tracked on-chain.
+
+---
+
+### 7️⃣ Best-Effort Trading (Pyth-Guarded)
+Attempts:
+
+- 📈 `openPosition`
+- ⏱ `applyFunding`
+- 🔒 `closePosition`
+
+If the Playground cluster has stale Pyth data:
+
+- ❄️ Operations are blocked by sanity guards
+- 🟡 Script logs the message
+- ✅ Script continues without failing
+
+---
+
+## 🛰️ Why Trading May Be Blocked
+
+Your program enforces Pyth sanity:
+
+- ⏳ Staleness checks
+- 📏 Confidence checks
+- 📉 Price validity
+
+Playground clusters often lack fresh devnet Pyth updates, so  
+risk-moving instructions may be rejected — this is expected.
+
+---
+
+## ✅ What This Client Demonstrates
+
+- Oracle initialization
+- Market creation
+- Vault + insurance wiring
+- Margin account lifecycle
+- USDC collateral flow
+- vAMM trade flow (when Pyth allows)
+
+---
+
+## 🎯 Purpose
+
+This is a **single-file, reproducible POC demo script** that:
+
+- Works inside Solana Playground
+- Requires no external infra
+- Is safe to re-run
+- Fully exercises your Tariff Perp architecture
+
+---
+
+**Tariff Oracle + Perp Market POC running end-to-end in Playground. 🚀**
