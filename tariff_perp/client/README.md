@@ -55,4 +55,4 @@ Idempotent — safe to re-run.
 
 The market references:
 
-🛰️ **Devnet SOL/USD Pyth feed**
+🛰️ **Devnet SOL/USD Pyth feed** : J83w4HKfqxwcq3BEMMkPFSppX3gqekLyLJBexebFVkix
